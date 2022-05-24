@@ -2,8 +2,11 @@ import express from 'express'
 import studentsRoutes from './routes/students.route.js'
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 const app = express()
+
+app.use(cors());
 
 const HOSTNAME = '127.0.0.1';
 const PORT = 5000;
