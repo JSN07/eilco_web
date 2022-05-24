@@ -9,7 +9,7 @@ router.get('/:studentId', getStudent);
 
 router.post('/', createStudent);
 
-router.put('/:studentId', updateStudent);
+router.put('/', updateStudent);
 
 router.patch('/:studentId', patchStudent);
 

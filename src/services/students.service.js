@@ -1,78 +1,85 @@
-import { students } from '../mocks/students.mock.js'
+import Student from '../models/students.model.js';
+import mongoose from 'mongoose'
 
-const getStudents = () => {
+/**
+ * 
+ * @returns All students
+ */
+const getStudents = async () => {
     try {
-        return students;
+        return await Student.find();
     } catch (e) {
         throw Error('Error while fetching student.');
     }
 }
 
-const getStudent = (studentId) => {
+/**
+ * 
+ * @param studentId The student's id to find
+ * @returns the student to find
+ */
+const getStudent = async (studentId) => {
     try {
-        return students.find((student) => student.id.toString() === studentId);
+        return await Student.findOne({_id: studentId});
     } catch (e) {
         throw Error('Error.');
     }
 }
 
-const createStudent = (name, firstname, age) => {
+/**
+ * 
+ * @param studentToCreate Data of the student to create
+ * @returns All students
+ */
+const createStudent = async (studentToCreate) => {
     try {
-        const newStudent = {
-            id: students.length+1,
-            name: name,
-            firstname: firstname,
-            age: age
-        }
-        students.push(newStudent);
-        return students;
+        const newStudent = new Student(studentToCreate)
+        await newStudent.save()
+        return getStudents();
     } catch (e) {
         throw Error('Error.');
     }
 }
 
-const updateStudent = (body) => {
+/**
+ * 
+ * @param studentToUpdate The student to update
+ * @returns All students
+ */
+const updateStudent = (studentToUpdate) => {
     try {
-        const studentToUpdate = getStudent(body.id.toString());
-        if(studentToUpdate) {
-            studentToUpdate.name = body.name;
-            studentToUpdate.firstname = body.firstname;
-            studentToUpdate.age = body.age;
-            return studentToUpdate;
-        }
-        throw Error('Student doesn\'t exist');
+        Student.findOneAndUpdate(studentToUpdate);
+        return studentToUpdate;
     } catch (e) {
         throw Error('Error.');
     }
 }
 
-const patchStudent = (studentId, body) => {
+/**
+ * 
+ * @param studentId The student id
+ * @param dataToPatch Data to patch
+ * @returns The patched student
+ */
+const patchStudent = async (studentId, dataToPatch) => {
     try {
-        const {  name, firstname, age } = body;
-        
-        const studentToPatch = getStudent(studentId);
-        
-        if(studentToUpdate) {
-            if(name) studentToPatch.name = name;
-            if(firstname) studentToPatch.firstname = firstname;
-            if(age) studentToPatch.age = age;
+        const studentToPatch = await getStudent(studentId);
+        const { name, firstname, age } = dataToPatch;
+    
+        if(name) studentToPatch.name = name;
+        if(firstname) studentToPatch.firstname = firstname;
+        if(age) studentToPatch.age = age;
 
-            deleteStudent(studentId);
-            students.push(studentToPatch);
-            
-            return studentToPatch;
-        }
-        throw Error('Student does\'nt exist.'); 
+        updateStudent(studentToPatch);
+        return studentToPatch;
     } catch (e) {
         throw Error('Error.');
     }
 }
 
-const deleteStudent = (studentId) => {
+const deleteStudent = async (studentId) => {
     try {
-        return students.filter((student) => 
-            student.id.toString() !== studentId
-        );
+        await Student.deleteOne({_id: studentId});
     } catch (e) {
         throw Error('Error.');
     }
