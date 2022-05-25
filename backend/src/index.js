@@ -11,7 +11,7 @@ app.use(cors());
 const HOSTNAME = '127.0.0.1';
 const PORT = 5000;
 
-mongoose.connect('mongodb+srv://jordans:<password>@testapi.ipjio.mongodb.net/eilco?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://jordans:VOOjWDegwToB9k6H@testapi.ipjio.mongodb.net/eilco?retryWrites=true&w=majority',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true

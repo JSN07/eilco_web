@@ -3,7 +3,7 @@ import * as StudentsService from "../services/students.service.js";
 export const getStudents = async (req, res) => {
     try {
         const students = await StudentsService.getStudents();
-        return res.status(200).json({ status: 200, data: students, message: "Students succesfully retrieved" });
+        return res.status(200).json(students);
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
